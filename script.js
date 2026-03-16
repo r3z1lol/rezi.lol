@@ -34,6 +34,14 @@ document.getElementById("avatar").src = cfg.avatar;
 document.getElementById("discord").href = cfg.discord;
 document.getElementById("twitter").href = cfg.twitter;
 document.getElementById("github").href = cfg.github;
+
+// --- ADDED BLOCK FOR OPENING LINKS IN NEW TAB ---
+const links = document.querySelectorAll('.links a');
+links.forEach(link => {
+    link.setAttribute('target', '_blank');
+    link.setAttribute('rel', 'noopener noreferrer');
+});
+
 document.getElementById("bg").style.backgroundImage = `url(${cfg.background})`;
 
 // Correct banner window background
@@ -76,8 +84,8 @@ function typeUsername(name){
 // Banner parallax
 function startParallax(){
   document.addEventListener("mousemove",(e)=>{
-    const x=(e.clientX/window.innerWidth-0.5)*40*2.5;  // 2.5x more movement
-    const y=(e.clientY/window.innerHeight-0.5)*40*2.5; // 2.5x more movement
+    const x=(e.clientX/window.innerWidth-0.5)*40*2.5;
+    const y=(e.clientY/window.innerHeight-0.5)*40*2.5;
     banner.style.transform=`translate(${x}px,${y}px)`;
   });
 }
@@ -85,8 +93,8 @@ function startParallax(){
 // Profile tilt
 function startTilt(){
   document.addEventListener("mousemove",(e)=>{
-    let x=(e.clientX/window.innerWidth-0.5)*15*2.5;  // 2.5x stronger tilt
-    let y=(e.clientY/window.innerHeight-0.5)*15*2.5;  // 2.5x stronger tilt
+    let x=(e.clientX/window.innerWidth-0.5)*15*2.5;
+    let y=(e.clientY/window.innerHeight-0.5)*15*2.5;
     card.style.transform=`translate(-50%, -50%) rotateY(${x}deg) rotateX(${-y}deg)`;
   });
 }
@@ -104,13 +112,8 @@ function startSparkles(){
 function startParticles(){
   const canvas=document.getElementById("particles"); const ctx=canvas.getContext("2d");
   canvas.width=window.innerWidth; canvas.height=window.innerHeight;
-  let particles=[];
-  for(let i=0;i<100;i++){particles.push({x:Math.random()*canvas.width,y:Math.random()*canvas.height,size:Math.random()*2,speed:Math.random()*0.7});}
-  function draw(){
-    ctx.clearRect(0,0,canvas.width,canvas.height);
-    particles.forEach(p=>{ctx.beginPath();ctx.arc(p.x,p.y,p.size,0,Math.PI*2);ctx.fillStyle="white";ctx.fill();p.y+=p.speed;if(p.y>canvas.height)p.y=0;});
-    requestAnimationFrame(draw);
-  }
+  let particles=[]; for(let i=0;i<100;i++){particles.push({x:Math.random()*canvas.width,y:Math.random()*canvas.height,size:Math.random()*2,speed:Math.random()*0.7});}
+  function draw(){ctx.clearRect(0,0,canvas.width,canvas.height);particles.forEach(p=>{ctx.beginPath();ctx.arc(p.x,p.y,p.size,0,Math.PI*2);ctx.fillStyle="white";ctx.fill();p.y+=p.speed;if(p.y>canvas.height)p.y=0;});requestAnimationFrame(draw);}
   draw();
 }
 
@@ -122,7 +125,7 @@ function startVisualizer(){
   src.connect(analyser); analyser.connect(audioCtx.destination);
   analyser.fftSize=64; const bufferLength=analyser.frequencyBinCount; const data=new Uint8Array(bufferLength);
   function draw(){requestAnimationFrame(draw); analyser.getByteFrequencyData(data); ctx.clearRect(0,0,canvas.width,canvas.height);
-    let barWidth=canvas.width/bufferLength; for(let i=0;i<bufferLength;i++){let barHeight=data[i]; ctx.fillStyle="white"; ctx.fillRect(i*barWidth,canvas.height-barHeight,barWidth-2,barHeight);}}
+    let barWidth=canvas.width/bufferLength; for(let i=0;i<bufferLength;i++){let barHeight=data[i]; ctx.fillStyle="white"; ctx.fillRect(i*barWidth,canvas.height-barHeight,barWidth-2,barHeight);} }
   draw();
 }
 
